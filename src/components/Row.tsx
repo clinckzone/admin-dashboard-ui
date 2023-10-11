@@ -25,8 +25,8 @@ const Row: React.FC<{ user: User }> = ({ user }) => {
 const RowActions: React.FC = () => {
 	return (
 		<div className="flex gap-2 col-span-1">
-			<EditIcon />
-			<DeleteIcon className="text-red-500" />
+			<EditIcon className="hover:cursor-pointer" />
+			<DeleteIcon className="hover:cursor-pointer text-red-500" />
 		</div>
 	);
 };

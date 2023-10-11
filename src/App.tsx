@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { USERS_FETCH_ENDPOINT, USERS_PER_PAGE } from './utils/constants';
 import { User } from './utils/types';
 import Pagination from './components/Pagination';
 import Page from './components/Page';
 
 function App() {
-	const [page, setPage] = useState<number>(0);
+	const [page, setPage] = useState<number>(1);
 
 	const [users, setUsers] = useState<User[]>([]);
 	const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
@@ -24,26 +24,35 @@ function App() {
 	}, []);
 
 	const getUserOnPage = useCallback(
-		(pageNum: number): User[] => {
-			const minIndex = pageNum * USERS_PER_PAGE;
-			const maxIndex = USERS_PER_PAGE * (pageNum + 1);
+		(page: number): User[] => {
+			// Reduce pageNum by 1 since array index starts from 1
+			const minIndex = (page - 1) * USERS_PER_PAGE;
+			const maxIndex = USERS_PER_PAGE * page;
 
 			return filteredUsers.filter((item, index) => index >= minIndex && index < maxIndex);
 		},
 		[filteredUsers]
 	);
 
-	const totalPages = useMemo(() => {
-		if (filteredUsers.length % USERS_PER_PAGE === 0) {
-			return filteredUsers.length / USERS_PER_PAGE;
-		} else return filteredUsers.length / USERS_PER_PAGE + 1;
-	}, [filteredUsers.length]);
+	const totalPages = Math.ceil(filteredUsers.length / USERS_PER_PAGE);
+	const setCurrentPage = useCallback(
+		(page: number) => {
+			if (page >= 1 && page <= totalPages) {
+				setPage(page);
+			}
+		},
+		[totalPages]
+	);
 
 	return (
 		<div className="flex flex-col items-center">
 			<h1 className="text-3xl font-bold my-5">Admin Dashboard</h1>
 			<Page users={getUserOnPage(page)} />
-			<Pagination totalPages={totalPages} currentPage={page} setCurrentPage={setPage} />
+			<Pagination
+				totalPages={totalPages}
+				currentPage={page}
+				setCurrentPage={setCurrentPage}
+			/>
 		</div>
 	);
 }
