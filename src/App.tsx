@@ -44,7 +44,7 @@ function App() {
 			const minIndex = (page - 1) * USERS_PER_PAGE;
 			const maxIndex = USERS_PER_PAGE * page;
 
-			return filteredUsers.filter((item, index) => index >= minIndex && index < maxIndex);
+			return filteredUsers.filter((_, index) => index >= minIndex && index < maxIndex);
 		},
 		[filteredUsers]
 	);
@@ -63,12 +63,14 @@ function App() {
 		<div className="flex flex-col items-center">
 			<h1 className="text-3xl font-bold my-5">Admin Dashboard</h1>
 			<Search searchText={searchText} filterUsersBySearch={filterUsersBySearch} />
-			<Page users={getUserOnPage(page)} />
-			<Pagination
-				totalPages={totalPages}
-				currentPage={page}
-				setCurrentPage={setCurrentPage}
-			/>
+			<Page users={getUserOnPage(page)} searchText={searchText} />
+			{filteredUsers.length > 0 && (
+				<Pagination
+					totalPages={totalPages}
+					currentPage={page}
+					setCurrentPage={setCurrentPage}
+				/>
+			)}
 		</div>
 	);
 }
