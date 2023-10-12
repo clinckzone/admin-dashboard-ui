@@ -5,16 +5,24 @@ import EditIcon from '../assets/edit.svg?react';
 type RowProps = {
 	user: User;
 	index: number;
+	isChecked: boolean;
+	toggleUserSelection: (user: User, checked: boolean) => void;
 };
 
-const Row: React.FC<RowProps> = ({ user, index }) => {
+const Row: React.FC<RowProps> = ({ user, index, isChecked, toggleUserSelection }) => {
 	return (
 		<div
-			className={`grid grid-cols-8 items-center h-10 ${
-				index % 2 ? 'bg-slate-300' : 'bg-slate-100'
+			className={`grid grid-cols-8 items-center h-10  ${
+				isChecked ? 'bg-blue-500 text-white' : index % 2 ? 'bg-slate-300' : 'bg-slate-100'
 			}`}
 		>
-			<input type="checkbox" className="h-5 col-span-1" id={`${user.id}`} />
+			<input
+				type="checkbox"
+				className="h-5 col-span-1"
+				id={`${user.id}`}
+				checked={isChecked}
+				onChange={(e) => toggleUserSelection(user, e.target.checked)}
+			/>
 			{Columns.map((column) => {
 				return (
 					<div key={column} className="col-span-2">

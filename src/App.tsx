@@ -4,11 +4,13 @@ import { User } from './utils/types';
 import Pagination from './components/Pagination';
 import Page from './components/Page';
 import Search from './components/Search';
+import DeleteButton from './components/DeleteButton';
 
 function App() {
 	const [page, setPage] = useState<number>(1);
 	const [searchText, setSearchText] = useState('');
 	const [users, setUsers] = useState<User[]>([]);
+	const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
 	const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
 
 	useEffect(() => {
@@ -24,9 +26,14 @@ function App() {
 		});
 	}, []);
 
+	// const deleteSelectedUsers = useCallback(() => {
+
+	// }, []);
+
 	const filterUsersBySearch = useCallback(
 		(searchText: string) => {
 			setSearchText(searchText);
+			setSelectedUsers([]);
 			setPage(1);
 
 			const filteredUsers = users.filter((user) => {
@@ -54,6 +61,7 @@ function App() {
 		(page: number) => {
 			if (page >= 1 && page <= totalPages) {
 				setPage(page);
+				setSelectedUsers([]);
 			}
 		},
 		[totalPages]
@@ -63,14 +71,22 @@ function App() {
 		<div className="flex flex-col items-center">
 			<h1 className="text-3xl font-bold my-5">Admin Dashboard</h1>
 			<Search searchText={searchText} filterUsersBySearch={filterUsersBySearch} />
-			<Page users={getUserOnPage(page)} searchText={searchText} />
-			{filteredUsers.length > 0 && (
-				<Pagination
-					totalPages={totalPages}
-					currentPage={page}
-					setCurrentPage={setCurrentPage}
-				/>
-			)}
+			<Page
+				users={getUserOnPage(page)}
+				searchText={searchText}
+				selectedUsers={selectedUsers}
+				setSelectedUsers={setSelectedUsers}
+			/>
+			<div className="w-9/12 grid grid-cols-[150px_auto_150px]">
+				<DeleteButton active={selectedUsers.length > 0} />
+				{filteredUsers.length > 0 && (
+					<Pagination
+						totalPages={totalPages}
+						currentPage={page}
+						setCurrentPage={setCurrentPage}
+					/>
+				)}
+			</div>
 		</div>
 	);
 }

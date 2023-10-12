@@ -57,7 +57,7 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, setCur
 	);
 
 	return (
-		<div className="flex gap-5 m-5 items-center">
+		<div className="flex gap-5 m-5 items-center justify-self-center">
 			<div
 				className={PaginationControlStyle(PaginationControl.START)}
 				onClick={() => setCurrentPage(1)}
@@ -73,6 +73,7 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, setCur
 			{Array.from(Array(totalPages)).map((_, index) => {
 				return (
 					<div
+						key={index}
 						className={PaginationControlStyle(PaginationControl.PAGE, index + 1)}
 						onClick={() => setCurrentPage(index + 1)}
 					>
