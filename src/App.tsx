@@ -30,6 +30,13 @@ function App() {
 		});
 	}, [searchText, users]);
 
+	const deleteUser = useCallback((user: User) => {
+		setUsers((prevUsers: User[]) => {
+			const newUsers = [...prevUsers].filter((u) => u.id !== user.id);
+			return newUsers;
+		});
+	}, []);
+
 	const deleteSelectedUsers = useCallback(() => {
 		setUsers((prevUsers: User[]) => {
 			const newUsers = [...prevUsers];
@@ -67,6 +74,7 @@ function App() {
 			<Page
 				users={getUserOnPage(page)}
 				searchText={searchText}
+				deleteUser={deleteUser}
 				selectedUsers={selectedUsers}
 				setSelectedUsers={setSelectedUsers}
 			/>

@@ -6,11 +6,18 @@ import RowHeader from './RowHeader';
 type PageProps = {
 	users: User[];
 	searchText: string;
+	deleteUser: (user: User) => void;
 	selectedUsers: User[];
 	setSelectedUsers: (users: User[] | ((users: User[]) => User[])) => void;
 };
 
-const Page: React.FC<PageProps> = ({ users, searchText, selectedUsers, setSelectedUsers }) => {
+const Page: React.FC<PageProps> = ({
+	users,
+	searchText,
+	deleteUser,
+	selectedUsers,
+	setSelectedUsers,
+}) => {
 	const togglePageSelection = useCallback(
 		(checked: boolean) => {
 			if (checked) {
@@ -54,6 +61,7 @@ const Page: React.FC<PageProps> = ({ users, searchText, selectedUsers, setSelect
 							user={user}
 							index={index}
 							isChecked={isChecked}
+							deleteUser={deleteUser}
 							toggleUserSelection={toggleUserSelection}
 							key={user.id}
 						/>

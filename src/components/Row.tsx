@@ -6,10 +6,11 @@ type RowProps = {
 	user: User;
 	index: number;
 	isChecked: boolean;
+	deleteUser: (user: User) => void;
 	toggleUserSelection: (user: User, checked: boolean) => void;
 };
 
-const Row: React.FC<RowProps> = ({ user, index, isChecked, toggleUserSelection }) => {
+const Row: React.FC<RowProps> = ({ user, index, isChecked, toggleUserSelection, deleteUser }) => {
 	return (
 		<div
 			className={`grid grid-cols-8 items-center h-10  ${
@@ -30,16 +31,13 @@ const Row: React.FC<RowProps> = ({ user, index, isChecked, toggleUserSelection }
 					</div>
 				);
 			})}
-			<RowActions />
-		</div>
-	);
-};
-
-const RowActions: React.FC = () => {
-	return (
-		<div className="flex gap-2 col-span-1">
-			<EditIcon className="hover:cursor-pointer" />
-			<DeleteIcon className="hover:cursor-pointer text-red-500" />
+			<div className="flex gap-2 col-span-1">
+				<EditIcon className="hover:cursor-pointer" />
+				<DeleteIcon
+					className="hover:cursor-pointer text-red-500"
+					onClick={() => deleteUser(user)}
+				/>
+			</div>
 		</div>
 	);
 };
