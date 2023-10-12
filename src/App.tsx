@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { USERS_FETCH_ENDPOINT, USERS_PER_PAGE } from './utils/constants';
 import { User } from './utils/types';
 import Pagination from './components/Pagination';
@@ -11,7 +11,6 @@ function App() {
 	const [searchText, setSearchText] = useState('');
 	const [users, setUsers] = useState<User[]>([]);
 	const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
-	const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
 
 	useEffect(() => {
 		async function fetchUsers(): Promise<User[]> {
@@ -22,28 +21,22 @@ function App() {
 
 		fetchUsers().then((data) => {
 			setUsers(data);
-			setFilteredUsers(data);
 		});
 	}, []);
 
-	// const deleteSelectedUsers = useCallback(() => {
+	const filteredUsers = useMemo(() => {
+		return users.filter((user) => {
+			return JSON.stringify(user).includes(searchText);
+		});
+	}, [searchText, users]);
 
-	// }, []);
-
-	const filterUsersBySearch = useCallback(
-		(searchText: string) => {
-			setSearchText(searchText);
-			setSelectedUsers([]);
-			setPage(1);
-
-			const filteredUsers = users.filter((user) => {
-				return JSON.stringify(user).includes(searchText);
-			});
-
-			setFilteredUsers(filteredUsers);
-		},
-		[users]
-	);
+	const deleteSelectedUsers = useCallback(() => {
+		setUsers((prevUsers: User[]) => {
+			const newUsers = [...prevUsers];
+			return newUsers.filter((user) => !selectedUsers.includes(user));
+		});
+		setSelectedUsers([]);
+	}, [selectedUsers]);
 
 	const getUserOnPage = useCallback(
 		(page: number): User[] => {
@@ -70,7 +63,7 @@ function App() {
 	return (
 		<div className="flex flex-col items-center">
 			<h1 className="text-3xl font-bold my-5">Admin Dashboard</h1>
-			<Search searchText={searchText} filterUsersBySearch={filterUsersBySearch} />
+			<Search searchText={searchText} setSearchText={setSearchText} />
 			<Page
 				users={getUserOnPage(page)}
 				searchText={searchText}
@@ -78,7 +71,7 @@ function App() {
 				setSelectedUsers={setSelectedUsers}
 			/>
 			<div className="w-9/12 grid grid-cols-[150px_auto_150px]">
-				<DeleteButton active={selectedUsers.length > 0} />
+				<DeleteButton active={selectedUsers.length > 0} onDelete={deleteSelectedUsers} />
 				{filteredUsers.length > 0 && (
 					<Pagination
 						totalPages={totalPages}
