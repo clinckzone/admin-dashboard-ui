@@ -2,11 +2,16 @@ import { User, Columns } from '../utils/types';
 import DeleteIcon from '../assets/delete.svg?react';
 import EditIcon from '../assets/edit.svg?react';
 
-const Row: React.FC<{ user: User }> = ({ user }) => {
+type RowProps = {
+	user: User;
+	index: number;
+};
+
+const Row: React.FC<RowProps> = ({ user, index }) => {
 	return (
 		<div
 			className={`grid grid-cols-8 items-center h-10 ${
-				user.id % 2 ? 'bg-slate-300' : 'bg-slate-100'
+				index % 2 ? 'bg-slate-300' : 'bg-slate-100'
 			}`}
 		>
 			<input type="checkbox" className="h-5 col-span-1" id={`${user.id}`} />

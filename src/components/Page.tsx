@@ -10,8 +10,8 @@ const Page: React.FC<PageProps> = ({ users }) => {
 	return (
 		<div className="w-9/12">
 			<RowHeader />
-			{users.map((user) => (
-				<Row user={user} key={user.id} />
+			{users.map((user, index) => (
+				<Row user={user} index={index} key={user.id} />
 			))}
 		</div>
 	);

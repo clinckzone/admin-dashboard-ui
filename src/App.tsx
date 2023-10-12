@@ -3,10 +3,11 @@ import { USERS_FETCH_ENDPOINT, USERS_PER_PAGE } from './utils/constants';
 import { User } from './utils/types';
 import Pagination from './components/Pagination';
 import Page from './components/Page';
+import Search from './components/Search';
 
 function App() {
 	const [page, setPage] = useState<number>(1);
-
+	const [searchText, setSearchText] = useState('');
 	const [users, setUsers] = useState<User[]>([]);
 	const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
 
@@ -22,6 +23,20 @@ function App() {
 			setFilteredUsers(data);
 		});
 	}, []);
+
+	const filterUsersBySearch = useCallback(
+		(searchText: string) => {
+			setSearchText(searchText);
+			setPage(1);
+
+			const filteredUsers = users.filter((user) => {
+				return JSON.stringify(user).includes(searchText);
+			});
+
+			setFilteredUsers(filteredUsers);
+		},
+		[users]
+	);
 
 	const getUserOnPage = useCallback(
 		(page: number): User[] => {
@@ -47,6 +62,7 @@ function App() {
 	return (
 		<div className="flex flex-col items-center">
 			<h1 className="text-3xl font-bold my-5">Admin Dashboard</h1>
+			<Search searchText={searchText} filterUsersBySearch={filterUsersBySearch} />
 			<Page users={getUserOnPage(page)} />
 			<Pagination
 				totalPages={totalPages}
