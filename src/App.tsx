@@ -30,6 +30,15 @@ function App() {
 		});
 	}, [searchText, users]);
 
+	const updateUser = useCallback((user: User) => {
+		setUsers((prevUsers: User[]) => {
+			const newUsers = [...prevUsers];
+			const index = newUsers.findIndex((u) => u.id === user.id);
+			newUsers.splice(index, 1, user);
+			return newUsers;
+		});
+	}, []);
+
 	const deleteUser = useCallback((user: User) => {
 		setUsers((prevUsers: User[]) => {
 			const newUsers = [...prevUsers].filter((u) => u.id !== user.id);
@@ -74,6 +83,7 @@ function App() {
 			<Page
 				users={getUserOnPage(page)}
 				searchText={searchText}
+				updateUser={updateUser}
 				deleteUser={deleteUser}
 				selectedUsers={selectedUsers}
 				setSelectedUsers={setSelectedUsers}

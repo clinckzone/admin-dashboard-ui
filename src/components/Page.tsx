@@ -6,6 +6,7 @@ import RowHeader from './RowHeader';
 type PageProps = {
 	users: User[];
 	searchText: string;
+	updateUser: (user: User) => void;
 	deleteUser: (user: User) => void;
 	selectedUsers: User[];
 	setSelectedUsers: (users: User[] | ((users: User[]) => User[])) => void;
@@ -14,6 +15,7 @@ type PageProps = {
 const Page: React.FC<PageProps> = ({
 	users,
 	searchText,
+	updateUser,
 	deleteUser,
 	selectedUsers,
 	setSelectedUsers,
@@ -61,6 +63,7 @@ const Page: React.FC<PageProps> = ({
 							user={user}
 							index={index}
 							isChecked={isChecked}
+							updateUser={updateUser}
 							deleteUser={deleteUser}
 							toggleUserSelection={toggleUserSelection}
 							key={user.id}
