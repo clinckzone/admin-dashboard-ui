@@ -9,7 +9,7 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ active, onDelete }) => {
 	return (
 		<button
 			onClick={() => onDelete()}
-			className={`h-10 self-center rounded-[4px] text-white ${
+			className={`my-4 h-10 self-center rounded-[4px] text-white ${
 				active ? activeStyle : inactiveStyle
 			}`}
 		>

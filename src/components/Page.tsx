@@ -52,7 +52,7 @@ const Page: React.FC<PageProps> = ({
 	return (
 		<div className="w-9/12">
 			<RowHeader
-				isChecked={users.every((user) => selectedUsers.includes(user))}
+				isChecked={users.length > 0 && users.every((user) => selectedUsers.includes(user))}
 				togglePageSelection={togglePageSelection}
 			/>
 			{users.length > 0 ? (

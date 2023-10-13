@@ -47,7 +47,8 @@ const Row: React.FC<RowProps> = ({
 				id={`${user.id}`}
 				checked={isChecked}
 				onChange={(e) => {
-					if (!editMode) toggleUserSelection(user, e.target.checked);
+					if (editMode) toggleEditMode(false);
+					toggleUserSelection(user, e.target.checked);
 				}}
 			/>
 			{editMode

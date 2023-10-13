@@ -30,6 +30,12 @@ function App() {
 		});
 	}, [searchText, users]);
 
+	const updateSearchText = useCallback((searchText: string) => {
+		setSearchText(searchText);
+		setPage(1);
+		setSelectedUsers([]);
+	}, []);
+
 	const updateUser = useCallback((user: User) => {
 		setUsers((prevUsers: User[]) => {
 			const newUsers = [...prevUsers];
@@ -79,7 +85,7 @@ function App() {
 	return (
 		<div className="flex flex-col items-center">
 			<h1 className="text-3xl font-bold my-5">Admin Dashboard</h1>
-			<Search searchText={searchText} setSearchText={setSearchText} />
+			<Search searchText={searchText} updateSearchText={updateSearchText} />
 			<Page
 				users={getUserOnPage(page)}
 				searchText={searchText}
