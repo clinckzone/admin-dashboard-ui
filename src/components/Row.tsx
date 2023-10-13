@@ -1,8 +1,9 @@
-import { InputHTMLAttributes, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { User, Columns } from '../utils/types';
 import TickIcon from '../assets/tick.svg?react';
 import DeleteIcon from '../assets/delete.svg?react';
 import EditIcon from '../assets/edit.svg?react';
+import { capitalizeFirstLetter } from '../utils/helper';
 
 type RowProps = {
 	user: User;
@@ -45,14 +46,21 @@ const Row: React.FC<RowProps> = ({
 				className="h-5 col-span-1"
 				id={`${user.id}`}
 				checked={isChecked}
-				onChange={(e) => toggleUserSelection(user, e.target.checked)}
+				onChange={(e) => {
+					if (!editMode) toggleUserSelection(user, e.target.checked);
+				}}
 			/>
 			{editMode
 				? Columns.map((column) => (
 						<input
 							type="text"
 							value={userData[column]}
-							className="col-span-2 h-8 mr-2"
+							placeholder={capitalizeFirstLetter(column)}
+							className={`col-span-2 h-8 mr-2 px-2 border-2 rounded-[4px] ${
+								index % 2
+									? 'bg-slate-200 outline-slate-500 border-slate-100'
+									: 'outline-slate-400'
+							}`}
 							onChange={(e) => updateUserData(e, column)}
 						/>
 				  ))
@@ -73,7 +81,9 @@ const Row: React.FC<RowProps> = ({
 				) : (
 					<EditIcon
 						className="hover:cursor-pointer hover:scale-[1.2]"
-						onClick={() => toggleEditMode(true)}
+						onClick={() => {
+							if (!isChecked) return toggleEditMode(true);
+						}}
 					/>
 				)}
 				<DeleteIcon
