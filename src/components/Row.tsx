@@ -9,7 +9,7 @@ type RowProps = {
 	user: User;
 	index: number;
 	isChecked: boolean;
-	updateUser: (user: User | ((user: User) => User)) => void;
+	updateUser: (user: User) => void;
 	deleteUser: (user: User) => void;
 	toggleUserSelection: (user: User, checked: boolean) => void;
 };
@@ -63,12 +63,12 @@ const Row: React.FC<RowProps> = ({
 							}`}
 							onChange={(e) => updateUserData(e, column)}
 						/>
-				  ))
+				))
 				: Columns.map((column) => (
 						<div key={column} className="col-span-2">
 							{user[column]}
 						</div>
-				  ))}
+				))}
 			<div className="flex gap-2 col-span-1">
 				{editMode ? (
 					<TickIcon
