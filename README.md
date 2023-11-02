@@ -31,7 +31,7 @@
 - Activating this checkbox will select or deselect all rows currently displayed on that specific page (limited to the 10 rows per page).
 - This action will not affect rows on other pages, ensuring users have precise control over their selections.
 
-## Setting up the project for local development
+## Setup for local development
 
 Nothing new here. Do the usual steps:
 
